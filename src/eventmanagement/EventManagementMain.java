@@ -1,12 +1,11 @@
-package main;
+package eventmanagement;
 
 import services.EventService;
 import utils.InputUtils;
 import models.Event;
-
 import java.sql.Date;
 
-public class Main {
+public class EventManagementMain {
     private static final EventService eventService = new EventService();
 
     public static void main(String[] args) {
