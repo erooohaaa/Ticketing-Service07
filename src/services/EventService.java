@@ -18,16 +18,7 @@ public class EventService {
         if (categoryName == null) {
             throw new IllegalArgumentException("Invalid category ID.");
         }
-        boolean result = eventDAO.createEvent(name, location, description, categoryName, price, tickets, date);
-        if (result) {
-            eventDAO.renumberEvents();
-            eventDAO.resetAutoIncrement();
-        }
-        return result;
-    }
-
-    public List<Event> listEvents() {
-        return eventDAO.getAllEvents();
+        return eventDAO.createEvent(name, location, description, categoryName, price, tickets, date);
     }
 
     public boolean editEvent(int id, String name, String location, String description, int categoryId, double price, int tickets, Date date) {
@@ -35,20 +26,14 @@ public class EventService {
         if (categoryName == null) {
             throw new IllegalArgumentException("Invalid category ID.");
         }
-        boolean result = eventDAO.updateEvent(id, name, location, description, categoryName, price, tickets, date);
-        if (result) {
-            eventDAO.renumberEvents();
-            eventDAO.resetAutoIncrement();
-        }
-        return result;
+        return eventDAO.updateEvent(id, name, location, description, categoryName, price, tickets, date);
+    }
+
+    public List<Event> listEvents() {
+        return eventDAO.getAllEvents();
     }
 
     public boolean removeEvent(int id) {
-        boolean result = eventDAO.deleteEvent(id);
-        if (result) {
-            eventDAO.renumberEvents();
-            eventDAO.resetAutoIncrement();
-        }
-        return result;
+        return eventDAO.deleteEvent(id);
     }
 }
