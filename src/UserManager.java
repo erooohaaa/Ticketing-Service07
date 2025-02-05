@@ -90,7 +90,7 @@ public class UserManager {
                 System.out.println("User not found.");
             }
         } catch (Exception e) {
-            System.out.println("Error retrieving profile information.");
+            System.out.println("Error retrieving profile");
             e.printStackTrace();
         }
     }
