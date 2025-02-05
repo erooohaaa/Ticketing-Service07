@@ -1,3 +1,5 @@
+package ui;
+
 import eventmanagement.EventManagementMain;
 import java.util.Scanner;
 

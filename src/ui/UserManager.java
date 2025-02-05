@@ -1,3 +1,5 @@
+package ui;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.Connection;
