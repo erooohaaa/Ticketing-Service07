@@ -2,6 +2,7 @@ package ui;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import config.DatabaseConfig;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,7 +37,7 @@ class AdminManager {
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
         String sql = "INSERT INTO admins (username, password, permissions) VALUES (?, ?, ?)";
-        try (Connection con = Database.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try (Connection con = DatabaseConfig.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setString(1, username);
             pstmt.setString(2, hashedPassword);
             pstmt.setString(3, permissions);
@@ -55,7 +56,7 @@ class AdminManager {
         String password = scanner.nextLine();
 
         String sql = "SELECT * FROM admins WHERE username = ?";
-        try (Connection con = Database.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try (Connection con = DatabaseConfig.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
 
@@ -73,7 +74,7 @@ class AdminManager {
 
     private static boolean isAdminUsernameExists(String username) {
         String sql = "SELECT COUNT(*) FROM admins WHERE username = ?";
-        try (Connection con = Database.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try (Connection con = DatabaseConfig.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
             return rs.next() && rs.getInt(1) > 0;

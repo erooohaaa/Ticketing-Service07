@@ -1,5 +1,6 @@
 package ui;
 
+import config.DatabaseConfig;
 import org.mindrot.jbcrypt.BCrypt;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +19,7 @@ public class UserManager {
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
         String sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
-        try (Connection con = Database.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try (Connection con = DatabaseConfig.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setString(1, username);
             pstmt.setString(2, email);
             pstmt.setString(3, hashedPassword);
@@ -37,7 +38,7 @@ public class UserManager {
         String password = scanner.nextLine();
 
         String sql = "SELECT * FROM users WHERE username = ?";
-        try (Connection con = Database.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try (Connection con = DatabaseConfig.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
 
@@ -80,7 +81,7 @@ public class UserManager {
 
     private static void viewProfile(String username) {
         String sql = "SELECT username, email FROM users WHERE username = ?";
-        try (Connection con = Database.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try (Connection con = DatabaseConfig.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
 
@@ -103,7 +104,7 @@ public class UserManager {
         String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
 
         String sql = "UPDATE users SET password = ? WHERE username = ?";
-        try (Connection con = Database.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try (Connection con = DatabaseConfig.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setString(1, hashedPassword);
             pstmt.setString(2, username);
             pstmt.executeUpdate();

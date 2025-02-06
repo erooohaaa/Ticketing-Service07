@@ -1,5 +1,6 @@
 package ui;
 
+import config.DatabaseConfig;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,7 +9,7 @@ import java.util.Scanner;
 class AdminActions {
     public static void viewAllUsers() {
         String sql = "SELECT * FROM users";
-        try (Connection con = Database.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
+        try (Connection con = DatabaseConfig.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
             System.out.println("All Registered Users:");
             while (rs.next()) {
                 System.out.println("User ID: " + rs.getInt("user_id") + ", Username: " + rs.getString("username") + ", Email: " + rs.getString("email"));
@@ -21,7 +22,7 @@ class AdminActions {
 
     public static void viewAllAdmins() {
         String sql = "SELECT * FROM admins";
-        try (Connection con = Database.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
+        try (Connection con = DatabaseConfig.getConnection();PreparedStatement pstmt = con.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
             System.out.println("All Registered Admins:");
             while (rs.next()) {
                 System.out.println("Admin ID: " + rs.getInt("admin_id") + ", Username: " + rs.getString("username") + ", Permissions: " + rs.getString("permissions"));
@@ -37,7 +38,7 @@ class AdminActions {
         int userId = scanner.nextInt();
 
         String sql = "DELETE FROM users WHERE user_id = ?";
-        try (Connection con = Database.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try (Connection con = DatabaseConfig.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setInt(1, userId);
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
@@ -63,7 +64,7 @@ class AdminActions {
         String sqlCheck = "SELECT permissions FROM admins WHERE admin_id = ?";
         String sqlDelete = "DELETE FROM admins WHERE admin_id = ?";
 
-        try (Connection con = Database.getConnection(); PreparedStatement pstmtCheck = con.prepareStatement(sqlCheck); PreparedStatement pstmtDelete = con.prepareStatement(sqlDelete)) {
+        try (Connection con = DatabaseConfig.getConnection();PreparedStatement pstmtCheck = con.prepareStatement(sqlCheck); PreparedStatement pstmtDelete = con.prepareStatement(sqlDelete)) {
             pstmtCheck.setInt(1, adminIdToDelete);
             ResultSet rsToDelete = pstmtCheck.executeQuery();
 
