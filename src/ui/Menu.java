@@ -1,5 +1,7 @@
 package ui;
 
+import utils.InputUtils;
+
 import java.util.Scanner;
 
 public class Menu {
@@ -12,9 +14,7 @@ public class Menu {
             System.out.println("3. Login as User");
             System.out.println("4. Login as Admin");
             System.out.println("5. Exit");
-
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = InputUtils.getInt("Choose an option: ");
 
             switch (choice) {
                 case 1 -> UserManager.registerUser(scanner);
