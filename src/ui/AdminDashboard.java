@@ -5,7 +5,7 @@ import services.AdminService;
 
 public class AdminDashboard {
     private final AdminService adminService;
-    public AdminDashboard(AdminService adminService) {  // 🆕 Добавлен конструктор
+    public AdminDashboard(AdminService adminService) {
         this.adminService = adminService;
     }
 
@@ -31,7 +31,7 @@ public class AdminDashboard {
             scanner.nextLine();
 
             switch (choice) {
-                case 1 -> AdminService.viewAllUsers();  // 🔄 Заменено: теперь вызываем AdminService
+                case 1 -> AdminService.viewAllUsers();
                 case 2 -> AdminService.viewAllAdmins();
                 case 3 -> AdminService.deleteUser(scanner);
                 case 4 -> AdminService.deleteAdmin(scanner);

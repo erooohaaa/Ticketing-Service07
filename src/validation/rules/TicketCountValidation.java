@@ -2,9 +2,6 @@ package validation.rules;
 
 import validation.ValidationRule;
 
-/**
-
- Проверяет, что количество билетов не отрицательное*/
 public class TicketCountValidation implements ValidationRule<Integer> {
     @Override
     public boolean validate(Integer tickets) {
