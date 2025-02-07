@@ -2,7 +2,7 @@ package validation.rules;
 
 import validation.ValidationRule;
 
-public class EventNameValidation implements ValidationRule<String> {
+public class LocationValidation implements ValidationRule<String> {
     @Override
     public boolean validate(String value) {
         return value != null && !value.trim().isEmpty() && !value.equalsIgnoreCase("N/A");
@@ -10,6 +10,6 @@ public class EventNameValidation implements ValidationRule<String> {
 
     @Override
     public String getErrorMessage() {
-        return "Event line cannot be empty or 'N/A'. Please enter a valid name.";
+        return "Location cannot be empty or 'N/A'. Please enter a valid location.";
     }
 }

@@ -26,7 +26,7 @@ class AdminManager {
         System.out.println("2. Edit");
         System.out.println("3. Read Only");
         int permissionChoice = scanner.nextInt();
-        scanner.nextLine(); // Clear buffer
+        scanner.nextLine();
 
         String permissions = getPermissionsFromChoice(permissionChoice);
         if (permissions == null) {
