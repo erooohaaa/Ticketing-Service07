@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Scanner;
 
-class AdminActions {
+public class AdminActions {
     public static void viewAllUsers() {
         String sql = "SELECT * FROM users";
         try (Connection con = DatabaseConfig.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
@@ -117,4 +117,5 @@ class AdminActions {
 
         return Integer.compare(currentLevel, targetLevel);
     }
+
 }

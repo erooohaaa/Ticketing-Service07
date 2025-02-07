@@ -1,9 +1,15 @@
 package ui;
 
-import eventmanagement.EventManagementMain;
 import java.util.Scanner;
+import services.AdminService;
 
 public class AdminDashboard {
+    private final AdminService adminService;
+    public AdminDashboard(AdminService adminService) {  // 🆕 Добавлен конструктор
+        this.adminService = adminService;
+    }
+
+
     public static void displayDashboard(Scanner scanner) {
         while (true) {
             System.out.println("\nAdmin Dashboard:");
@@ -25,11 +31,11 @@ public class AdminDashboard {
             scanner.nextLine();
 
             switch (choice) {
-                case 1 -> AdminActions.viewAllUsers();
-                case 2 -> AdminActions.viewAllAdmins();
-                case 3 -> AdminActions.deleteUser(scanner);
-                case 4 -> AdminActions.deleteAdmin(scanner);
-                case 5 -> EventManagementMain.main(new String[]{});
+                case 1 -> AdminService.viewAllUsers();  // 🔄 Заменено: теперь вызываем AdminService
+                case 2 -> AdminService.viewAllAdmins();
+                case 3 -> AdminService.deleteUser(scanner);
+                case 4 -> AdminService.deleteAdmin(scanner);
+                case 5 -> AdminService.manageEvents();
                 case 6 -> {
                     System.out.println("Logging out...");
                     return;
