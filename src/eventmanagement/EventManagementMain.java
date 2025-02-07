@@ -1,5 +1,8 @@
 package eventmanagement;
 
+import dao.CategoryDAO;
+import dao.EventDAO;
+import services.CategoryService;
 import services.EventService;
 import utils.InputUtils;
 import models.Event;
@@ -7,7 +10,7 @@ import java.sql.Date;
 import java.util.List;
 
 public class EventManagementMain {
-    private static final EventService eventService = new EventService();
+    private static final EventService eventService = new EventService(new EventDAO(), new CategoryService(new CategoryDAO()));
 
     public static void main(String[] args) {
         while (true) {
