@@ -12,8 +12,4 @@ public class Category {
     public String getName() {
         return name;
     }
-
-    public int getSeats() {
-        return seats;
-    }
 }

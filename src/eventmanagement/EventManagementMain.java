@@ -35,8 +35,7 @@ public class EventManagementMain {
                 case 3 -> editEvent();
                 case 4 -> deleteEvent();
                 case 5 -> viewEventDetails();
-                case 6 -> manageCategories();
-                case 7 -> {
+                case 6 -> {
                     System.out.println("Exiting...");
                     return;
                 }
@@ -152,50 +151,4 @@ public class EventManagementMain {
         }
     }
 
-    private static void manageCategories() {
-        while (true) {
-            System.out.println("\n--- Category Management ---");
-            System.out.println("1. List Categories");
-            System.out.println("2. Add Category");
-            System.out.println("3. Remove Category");
-            System.out.println("4. Back to Main Menu");
-
-            int choice = InputUtils.getInt("Choose an option: ");
-
-            switch (choice) {
-                case 1 -> {
-                    List<Category> categories = CategoryService.getAllCategories();
-                    if (categories.isEmpty()) {
-                        System.out.println("No categories available.");
-                    } else {
-                        System.out.println("Categories:");
-                        for (Category category : categories) {
-                            System.out.println("- " + category);
-                        }
-                    }
-                }
-                case 2 -> {
-                    String category = InputUtils.getString("Enter new category: ");
-                    if (categoryService.addCategory(category)) {
-                        System.out.println("✅ Category added successfully.");
-                    } else {
-                        System.out.println("❌ Failed to add category.");
-                    }
-                }
-                case 3 -> {
-                    String category = InputUtils.getString("Enter category to remove: ");
-                    if (categoryService.removeCategory(category)) {
-                        System.out.println("✅ Category removed successfully.");
-                    } else {
-                        System.out.println("❌ Failed to remove category. It may not exist.");
-                    }
-                }
-                case 4 -> {
-                    System.out.println("Returning to main menu...");
-                    return;
-                }
-                default -> System.out.println("Invalid option. Try again.");
-            }
-        }
-    }
 }
