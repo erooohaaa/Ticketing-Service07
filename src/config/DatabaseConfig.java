@@ -11,20 +11,21 @@ public class DatabaseConfig {
 
     private static Connection connection;
 
-    private DatabaseConfig() {}  // Закрываем возможность создания экземпляра класса
+    private DatabaseConfig() {}
 
     public static Connection getConnection() {
-        if (connection == null) {
-            synchronized (DatabaseConfig.class) {  // Блокировка для многопоточной безопасности
-                if (connection == null) {
-                    try {
+        try {
+            if (connection == null || connection.isClosed()) {
+                synchronized (DatabaseConfig.class) {
+                    if (connection == null || connection.isClosed()) {  // Проверка на закрытое соединение
                         connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        throw new RuntimeException("❌ Failed to connect to the database.");
+                        System.out.println("✅ New database connection established.");
                     }
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("❌ Failed to connect to the database.");
         }
         return connection;
     }
