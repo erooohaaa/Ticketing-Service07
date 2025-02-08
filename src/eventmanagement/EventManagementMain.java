@@ -145,7 +145,6 @@ public class EventManagementMain {
             System.out.println("❌ Failed to add category.");
         }
 
-// Deleting a category
         if (categoryService.removeCategory("VIP")) {
             System.out.println("✅ Category deleted successfully.");
         } else {

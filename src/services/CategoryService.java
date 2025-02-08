@@ -35,7 +35,7 @@ public class CategoryService {
              PreparedStatement pstmt = con.prepareStatement(sql)) {
 
             pstmt.setString(1, categoryName);
-            return pstmt.executeUpdate() > 0;  // Fixed: Remove from DB, not just a list
+            return pstmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
