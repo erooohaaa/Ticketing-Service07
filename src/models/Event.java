@@ -27,6 +27,9 @@ public class Event {
         this.soldTickets = soldTickets;
     }
 
+    public Event(int id, String name, String location, Date date, String description, String category, double price, int tickets, int i) {
+    }
+
     public int getId() { return id; }
     public String getName() { return name; }
     public String getLocation() { return location; }

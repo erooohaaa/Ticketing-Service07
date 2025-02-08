@@ -1,15 +1,22 @@
 package eventmanagement;
 
+import models.Category;
 import services.EventService;
+import services.CategoryService;
 import utils.InputUtils;
 import models.Event;
 import java.sql.Date;
 import java.util.List;
 
 public class EventManagementMain {
-    private static final EventService eventService = new EventService();
+    private static final CategoryService categoryService = new CategoryService();
+    private static EventService eventService = new EventService();
 
-    public static void main(String[] args) {
+    public EventManagementMain() {
+        this.eventService = new EventService();
+    }
+
+    public static void start() {
         while (true) {
             System.out.println("\n--- Event Management ---");
             System.out.println("1. Add Event");
@@ -17,7 +24,8 @@ public class EventManagementMain {
             System.out.println("3. Edit Event");
             System.out.println("4. Delete Event");
             System.out.println("5. View Event Details");
-            System.out.println("6. Exit");
+            System.out.println("6. Manage Categories");
+            System.out.println("7. Exit");
 
             int choice = InputUtils.getInt("Choose an option: ");
 
@@ -27,7 +35,8 @@ public class EventManagementMain {
                 case 3 -> editEvent();
                 case 4 -> deleteEvent();
                 case 5 -> viewEventDetails();
-                case 6 -> {
+                case 6 -> manageCategories();
+                case 7 -> {
                     System.out.println("Exiting...");
                     return;
                 }
@@ -35,6 +44,7 @@ public class EventManagementMain {
             }
         }
     }
+
 
     private static void addEvent() {
         String name = InputUtils.getString("Enter event name: ");
@@ -59,24 +69,24 @@ public class EventManagementMain {
             System.out.println("No events found.");
             return;
         }
+
+        System.out.printf("%-5s | %-20s | %-15s | %-10s | %-10s | %-7s | %-10s%n",
+                "ID", "Name", "Location", "Date", "Category", "Price", "Tickets");
+        System.out.println("--------------------------------------------------------------------------------");
+
+
         for (Event event : events) {
-            System.out.println(event.getId() + ". " + event.getName() + " - " + event.getLocation() +
-                    " (" + event.getDate() + "), " + event.getCategory() + ", " + event.getPrice() + "$" +
-                    ", Tickets: " + event.getAvailableTickets());
+            System.out.printf("%-5d | %-20s | %-15s | %-10s | %-10s | %-7.2f | %-10d%n",
+                    event.getId(), event.getName(), event.getLocation(),
+                    event.getDate(), event.getCategory(), event.getPrice(), event.getAvailableTickets());
         }
     }
 
     private static void editEvent() {
         int id = InputUtils.getInt("Enter event ID to edit: ");
-        String name = InputUtils.getString("Enter new event name: ");
-        String location = InputUtils.getString("Enter new event location: ");
-        String description = InputUtils.getString("Enter new event description: ");
-        String category = InputUtils.getString("Enter new event category: ");
-        double price = InputUtils.getDouble("Enter new event price: ");
-        int tickets = InputUtils.getInt("Enter new available tickets: ");
-        Date date = InputUtils.getDate("Enter new event date");
-
-        if (eventService.editEvent(id, name, location, description, category, price, tickets, date)) {
+        Event updatedEvent = getEventDetailsFromUser(true);
+        if (eventService.editEvent(id, updatedEvent.getName(), updatedEvent.getLocation(), updatedEvent.getDescription(),
+                updatedEvent.getCategory(), updatedEvent.getPrice(), updatedEvent.getAvailableTickets(), updatedEvent.getDate())) {
             System.out.println("✅ Event updated successfully.");
         } else {
             System.out.println("❌ Failed to update event.");
@@ -110,5 +120,83 @@ public class EventManagementMain {
         System.out.println("Price: " + event.getPrice() + "$");
         System.out.println("Available Tickets: " + event.getAvailableTickets());
         System.out.println("Tickets Sold: " + event.getSoldTickets());
+    }
+
+    private static Event getEventDetailsFromUser(boolean isEdit) {
+        String name = InputUtils.getString("Enter " + (isEdit ? "new " : "") + "event name: ");
+        String location = InputUtils.getString("Enter " + (isEdit ? "new " : "") + "event location: ");
+        String description = InputUtils.getString("Enter " + (isEdit ? "new " : "") + "event description: ");
+        String category = InputUtils.getString("Enter " + (isEdit ? "new " : "") + "event category: ");
+        double price = InputUtils.getDouble("Enter " + (isEdit ? "new " : "") + "event price: ");
+        int tickets = InputUtils.getInt("Enter " + (isEdit ? "new " : "") + "available tickets: ");
+        Date date = InputUtils.getDate("Enter " + (isEdit ? "new " : "") + "event date");
+
+        return new Event(0, name, location, date, description, category, price, tickets, 0); // ID & soldTickets default
+    }
+
+
+    public static void main(String[] args) {
+        EventManagementMain app = new EventManagementMain();
+        app.start();
+        CategoryService categoryService = new CategoryService();
+        if (categoryService.addCategory("VIP")) {
+            System.out.println("✅ Category added successfully.");
+        } else {
+            System.out.println("❌ Failed to add category.");
+        }
+
+// Deleting a category
+        if (categoryService.removeCategory("VIP")) {
+            System.out.println("✅ Category deleted successfully.");
+        } else {
+            System.out.println("❌ Failed to delete category.");
+        }
+    }
+
+    private static void manageCategories() {
+        while (true) {
+            System.out.println("\n--- Category Management ---");
+            System.out.println("1. List Categories");
+            System.out.println("2. Add Category");
+            System.out.println("3. Remove Category");
+            System.out.println("4. Back to Main Menu");
+
+            int choice = InputUtils.getInt("Choose an option: ");
+
+            switch (choice) {
+                case 1 -> {
+                    List<Category> categories = CategoryService.getAllCategories();
+                    if (categories.isEmpty()) {
+                        System.out.println("No categories available.");
+                    } else {
+                        System.out.println("Categories:");
+                        for (Category category : categories) {
+                            System.out.println("- " + category);
+                        }
+                    }
+                }
+                case 2 -> {
+                    String category = InputUtils.getString("Enter new category: ");
+                    if (categoryService.addCategory(category)) {
+                        System.out.println("✅ Category added successfully.");
+                    } else {
+                        System.out.println("❌ Failed to add category.");
+                    }
+                }
+                case 3 -> {
+                    String category = InputUtils.getString("Enter category to remove: ");
+                    if (categoryService.removeCategory(category)) {
+                        System.out.println("✅ Category removed successfully.");
+                    } else {
+                        System.out.println("❌ Failed to remove category. It may not exist.");
+                    }
+                }
+                case 4 -> {
+                    System.out.println("Returning to main menu...");
+                    return;
+                }
+                default -> System.out.println("Invalid option. Try again.");
+            }
+        }
     }
 }
