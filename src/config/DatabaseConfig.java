@@ -14,12 +14,6 @@ public class DatabaseConfig {
     private DatabaseConfig() {}
 
     public static Connection getConnection() {
-        try {
-            if (connection == null || connection.isClosed()) {
-                synchronized (DatabaseConfig.class) {
-                    if (connection == null || connection.isClosed()) {  // Проверка на закрытое соединение
-                        connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                        System.out.println("✅ New database connection established.");
                     }
                 }
             }
@@ -28,5 +22,27 @@ public class DatabaseConfig {
             throw new RuntimeException("❌ Failed to connect to the database.");
         }
         return connection;
+    }
+
+
+    private static boolean isClosed(Connection conn) {
+        try {
+            return conn == null || conn.isClosed();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return true;
+        }
+    }
+
+    public static void closeConnection() {
+        if (connection != null) {
+            try {
+                connection.close();
+                connection = null;
+                System.out.println("✅ Database connection closed.");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

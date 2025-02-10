@@ -1,34 +1,31 @@
 package eventmanagement;
 
 import services.EventService;
-import utils.InputUtils;
-import models.Event;
 import java.sql.Date;
-import java.util.List;
+import java.util.Scanner;
 
 public class EventManagementMain {
-    private static final EventService eventService = new EventService();
-
-    public static void main(String[] args) {
+    public static void manageEvents() {  // ✅ Исправлено: метод теперь есть
+        Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("\n--- Event Management ---");
-            System.out.println("1. Add Event");
-            System.out.println("2. List Events");
+            System.out.println("\nEvent Management:");
+            System.out.println("1. View Events");
+            System.out.println("2. Add Event");
             System.out.println("3. Edit Event");
-            System.out.println("4. Delete Event");
-            System.out.println("5. View Event Details");
-            System.out.println("6. Exit");
+            System.out.println("4. Remove Event");
+            System.out.println("5. Back to Admin Menu");
+            System.out.print("Choose an option: ");
 
-            int choice = InputUtils.getInt("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
 
             switch (choice) {
-                case 1 -> addEvent();
-                case 2 -> listEvents();
-                case 3 -> editEvent();
-                case 4 -> deleteEvent();
-                case 5 -> viewEventDetails();
-                case 6 -> {
-                    System.out.println("Exiting...");
+                case 1 -> listEvents();
+                case 2 -> addEvent(scanner);
+                case 3 -> editEvent(scanner);
+                case 4 -> removeEvent(scanner);
+                case 5 -> {
+                    System.out.println("Returning to Admin Menu...");
                     return;
                 }
                 default -> System.out.println("Invalid option. Try again.");
@@ -36,79 +33,69 @@ public class EventManagementMain {
         }
     }
 
-    private static void addEvent() {
-        String name = InputUtils.getString("Enter event name: ");
-        String location = InputUtils.getString("Enter event location: ");
-        String description = InputUtils.getString("Enter event description: ");
-        String category = InputUtils.getString("Enter event category: ");
-        double price = InputUtils.getDouble("Enter event price: ");
-        int tickets = InputUtils.getInt("Enter available tickets: ");
-        Date date = InputUtils.getDate("Enter event date");
+    public static void addEvent(Scanner scanner) {
+        System.out.print("Enter event name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter event location: ");
+        String location = scanner.nextLine();
+        System.out.print("Enter event description: ");
+        String description = scanner.nextLine();
+        System.out.print("Enter event category: ");
+        String category = scanner.nextLine();
+        System.out.print("Enter event price: ");
+        double price = scanner.nextDouble();
+        System.out.print("Enter available tickets: ");
+        int tickets = scanner.nextInt();
+        System.out.print("Enter event date (YYYY-MM-DD): ");
+        Date date = Date.valueOf(scanner.next());
 
-        if (eventService.addEvent(name, location, description, category, price, tickets, date)) {
+        if (EventService.addEvent(name, location, description, category, price, tickets, date)) {
             System.out.println("✅ Event added successfully.");
         } else {
             System.out.println("❌ Failed to add event.");
         }
     }
 
-    private static void listEvents() {
+    public static void listEvents() {
         System.out.println("\n--- Events ---");
-        List<Event> events = eventService.listEvents();
-        if (events.isEmpty()) {
-            System.out.println("No events found.");
-            return;
-        }
-        for (Event event : events) {
-            System.out.println(event.getId() + ". " + event.getName() + " - " + event.getLocation() +
-                    " (" + event.getDate() + "), " + event.getCategory() + ", " + event.getPrice() + "$" +
-                    ", Tickets: " + event.getAvailableTickets());
-        }
+        EventService.listEvents();
     }
 
-    private static void editEvent() {
-        int id = InputUtils.getInt("Enter event ID to edit: ");
-        String name = InputUtils.getString("Enter new event name: ");
-        String location = InputUtils.getString("Enter new event location: ");
-        String description = InputUtils.getString("Enter new event description: ");
-        String category = InputUtils.getString("Enter new event category: ");
-        double price = InputUtils.getDouble("Enter new event price: ");
-        int tickets = InputUtils.getInt("Enter new available tickets: ");
-        Date date = InputUtils.getDate("Enter new event date");
+    public static void editEvent(Scanner scanner) {
+        System.out.print("Enter event ID to edit: ");
+        int eventId = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Enter new event name: ");
+        String newName = scanner.nextLine();
+        System.out.print("Enter new location: ");
+        String newLocation = scanner.nextLine();
+        System.out.print("Enter new description: ");
+        String newDescription = scanner.nextLine();
+        System.out.print("Enter new category: ");
+        String newCategory = scanner.nextLine();
+        System.out.print("Enter new price: ");
+        double newPrice = scanner.nextDouble();
+        System.out.print("Enter new available tickets: ");
+        int newTickets = scanner.nextInt();
+        System.out.print("Enter new event date (YYYY-MM-DD): ");
+        Date newDate = Date.valueOf(scanner.next());
 
-        if (eventService.editEvent(id, name, location, description, category, price, tickets, date)) {
+        if (EventService.editEvent(eventId, newName, newLocation, newDescription, newCategory, newPrice, newTickets, newDate)) {
             System.out.println("✅ Event updated successfully.");
         } else {
             System.out.println("❌ Failed to update event.");
         }
     }
 
-    private static void deleteEvent() {
-        int id = InputUtils.getInt("Enter event ID to delete: ");
-        if (eventService.removeEvent(id)) {
-            System.out.println("✅ Event deleted successfully.");
+    public static void removeEvent(Scanner scanner) {
+        System.out.print("Enter event ID to remove: ");
+        int eventId = scanner.nextInt();
+        scanner.nextLine();
+
+        if (EventService.removeEvent(eventId)) {
+            System.out.println("✅ Event removed successfully.");
         } else {
-            System.out.println("❌ Failed to delete event.");
+            System.out.println("❌ Failed to remove event.");
         }
-    }
-
-    private static void viewEventDetails() {
-        int id = InputUtils.getInt("Enter event ID: ");
-        Event event = eventService.getEventDetails(id);
-        if (event == null) {
-            System.out.println("❌ Event not found.");
-            return;
-        }
-
-        System.out.println("\n--- Event Details ---");
-        System.out.println("ID: " + event.getId());
-        System.out.println("Name: " + event.getName());
-        System.out.println("Location: " + event.getLocation());
-        System.out.println("Date: " + event.getDate());
-        System.out.println("Description: " + event.getDescription());
-        System.out.println("Category: " + event.getCategory());
-        System.out.println("Price: " + event.getPrice() + "$");
-        System.out.println("Available Tickets: " + event.getAvailableTickets());
-        System.out.println("Tickets Sold: " + event.getSoldTickets());
     }
 }

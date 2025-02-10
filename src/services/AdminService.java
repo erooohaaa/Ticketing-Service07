@@ -1,10 +1,11 @@
 package services;
+
 import ui.AdminActions;
 import eventmanagement.EventManagementMain;
 import java.util.Scanner;
 
 public class AdminService {
-    private final AdminActions adminActions;
+    private AdminActions adminActions;  // ✅ Добавлено
 
     public AdminService(AdminActions adminActions) {
         this.adminActions = adminActions;
@@ -27,6 +28,6 @@ public class AdminService {
     }
 
     public static void manageEvents() {
-        EventManagementMain.main(new String[]{});
+        EventManagementMain.manageEvents();
     }
 }

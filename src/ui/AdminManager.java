@@ -62,7 +62,7 @@ class AdminManager {
 
             if (rs.next() && BCrypt.checkpw(password, rs.getString("password"))) {
                 System.out.println("Admin login successful! Welcome, " + username);
-                AdminDashboard.displayDashboard(scanner);
+                AdminDashboard.displayAdminMenu(scanner); // ✅ Исправлено
             } else {
                 System.out.println("Invalid credentials. Try again.");
             }
