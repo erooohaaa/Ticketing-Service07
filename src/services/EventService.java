@@ -25,7 +25,7 @@ public class EventService {
 
     public static boolean addEvent(String name, String location, String description, String category, double price, int tickets, Date date) {
         System.out.println("➕ Adding event: " + name);
-        return true; // Заглушка, в реальности нужна логика сохранения в базу
+        return true;
     }
 
     public static boolean editEvent(int eventId, String newName, String newLocation, String newDescription, String newCategory, double newPrice, int newTickets, Date newDate) {

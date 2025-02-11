@@ -1,15 +1,21 @@
 package ui;
 
 import java.util.Scanner;
+import services.TicketService;
 
 public class UserDashboard {
-    public static void displayUserMenu(Scanner scanner) {
+    private TicketUI ticketUI;
+    private Scanner scanner = new Scanner(System.in);
+
+    public static void displayUserMenu(Scanner scanner, TicketService ticketService) {
+        TicketUI ticketUI = new TicketUI(ticketService);
         while (true) {
             System.out.println("\n👤 User Dashboard:");
             System.out.println("1. View Events");
             System.out.println("2. Book Ticket");
             System.out.println("3. View My Tickets");
-            System.out.println("4. Logout");
+            System.out.println("4. Manage Tickets");
+            System.out.println("5. Logout");
             System.out.print("Choose an option: ");
 
             int choice = scanner.nextInt();
@@ -19,7 +25,8 @@ public class UserDashboard {
                 case 1 -> EventUI.viewEvents();
                 case 2 -> EventUI.bookTicket(scanner);
                 case 3 -> EventUI.viewUserTickets(scanner);
-                case 4 -> {
+                case 4 -> ticketUI.showTicketMenu();
+                case 5 -> {
                     System.out.println("Logging out...");
                     return;
                 }

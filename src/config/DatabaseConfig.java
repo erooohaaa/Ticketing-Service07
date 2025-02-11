@@ -15,7 +15,7 @@ public class DatabaseConfig {
 
     public static Connection getConnection() {
         try {
-            if (connection == null || connection.isClosed()) {  // Проверка перед возвратом соединения
+            if (connection == null || connection.isClosed()) {  
                 connection = DriverManager.getConnection(URL, USER, PASSWORD);
                 System.out.println("✅ Database connected successfully.");
             }
