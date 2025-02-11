@@ -1,7 +1,10 @@
 package ui;
 
 import config.DatabaseConfig;
+import dao.TicketDAOImpl;
 import org.mindrot.jbcrypt.BCrypt;
+import services.TicketService;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -84,7 +87,7 @@ public class AuthManager {
                     String hashedPassword = rs.getString("password");
                     if (BCrypt.checkpw(password, hashedPassword)) {
                         System.out.println("✅ Login successful! Welcome, User " + username);
-                        UserDashboard.displayUserMenu(scanner);  // Запуск панели пользователя
+                        UserDashboard.displayUserMenu(scanner, new TicketService(new TicketDAOImpl()));
                         return;
                     } else {
                         System.out.println("❌ Incorrect password.");
