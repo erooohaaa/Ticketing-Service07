@@ -27,7 +27,7 @@ public class AdminService {
         AdminActions.deleteAdmin(scanner);
     }
 
-    public static void manageEvents() {
-        EventManagementMain.manageEvents();
+    public static void manageEvents(Scanner scanner) {
+        EventManagementMain.manageEvents(scanner);
     }
 }
