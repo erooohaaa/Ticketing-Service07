@@ -5,8 +5,7 @@ import java.sql.Date;
 import java.util.Scanner;
 
 public class EventManagementMain {
-    public static void manageEvents() {  // ✅ Исправлено: метод теперь есть
-        Scanner scanner = new Scanner(System.in);
+    public static void manageEvents(Scanner scanner) {  // ✅ Передаем scanner из AdminDashboard
         while (true) {
             System.out.println("\nEvent Management:");
             System.out.println("1. View Events");
