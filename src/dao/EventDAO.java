@@ -10,8 +10,7 @@ public class EventDAO {
 
     public boolean createEvent(String name, String location, String description, String category, double price, int tickets, Date date) {
         String sql = "INSERT INTO events (event_name, location, description, category, price, available_tickets, event_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (Connection con = DatabaseConfig.getConnection();
-             PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = DatabaseConfig.getConnection().prepareStatement(sql)) {
 
             pstmt.setString(1, name);
             pstmt.setString(2, location);
@@ -66,9 +65,9 @@ public class EventDAO {
         List<Event> events = new ArrayList<>();
         String sql = "SELECT event_id, event_name, location, event_date, description, category, price, available_tickets FROM events ORDER BY event_id";
 
-        try (Connection con = DatabaseConfig.getConnection();
-             PreparedStatement pstmt = con.prepareStatement(sql);
+        try (PreparedStatement pstmt = DatabaseConfig.getConnection().prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
+
 
             while (rs.next()) {
                 events.add(new Event(

@@ -14,25 +14,16 @@ public class DatabaseConfig {
     private DatabaseConfig() {}
 
     public static Connection getConnection() {
-        if (connection == null) {
-            try {
+        try {
+            if (connection == null || connection.isClosed()) {
                 connection = DriverManager.getConnection(URL, USER, PASSWORD);
                 System.out.println("✅ Database connected successfully.");
-            } catch (SQLException e) {
-                e.printStackTrace();
-                throw new RuntimeException("❌ Failed to connect to the database.");
             }
-        }
-        return connection;
-    }
-
-    private static boolean isClosed(Connection conn) {
-        try {
-            return conn == null || conn.isClosed();
         } catch (SQLException e) {
             e.printStackTrace();
-            return true;
+            throw new RuntimeException("❌ Failed to connect to the database.");
         }
+        return connection;
     }
 
     public static void closeConnection() {
