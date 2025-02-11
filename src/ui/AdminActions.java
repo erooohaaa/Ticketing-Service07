@@ -9,7 +9,9 @@ import java.util.Scanner;
 public class AdminActions {
     public static void viewAllUsers() {
         String sql = "SELECT * FROM users";
-        try (Connection con = DatabaseConfig.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
+        try (PreparedStatement pstmt = DatabaseConfig.getConnection().prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
             System.out.println("All Registered Users:");
             while (rs.next()) {
                 System.out.println("User ID: " + rs.getInt("user_id") + ", Username: " + rs.getString("username") + ", Email: " + rs.getString("email"));
