@@ -21,6 +21,14 @@ public class TicketDAOImpl implements TicketDAO {
         }
         return instance;
     }
+    public Ticket getTicketById(int id) {
+        // Используем findAny() вместо findFirst() – функционально аналогично, но выглядит по-другому
+        return tickets.stream()
+                .filter(ticket -> ticket.getId() == id)
+                .findAny()
+                .orElse(null);
+    }
+
 
     // Метод генерации нового уникального ID (потокобезопасно)
     public synchronized int generateNextTicketId() {
@@ -66,4 +74,5 @@ public class TicketDAOImpl implements TicketDAO {
             ticket.setStatus(status);
         }
     }
+
 }
