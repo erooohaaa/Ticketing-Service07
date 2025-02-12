@@ -8,7 +8,6 @@ public class OrderController {
         return DAOFactory.getOrderDAO().getFullOrderDescription(orderId);
     }
 
-
     public static void main(String[] args) {
         int orderIdToFetch = 1;
         FullOrderDescription fod = getFullOrderDescription(orderIdToFetch);

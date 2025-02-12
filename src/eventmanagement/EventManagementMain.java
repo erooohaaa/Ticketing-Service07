@@ -3,9 +3,10 @@ package eventmanagement;
 import services.EventService;
 import java.sql.Date;
 import java.util.Scanner;
+import validation.rules.EventValidator;
 
 public class EventManagementMain {
-    public static void manageEvents(Scanner scanner) {  // ✅ Передаем scanner из AdminDashboard
+    public static void manageEvents(Scanner scanner) {
         while (true) {
             System.out.println("\nEvent Management:");
             System.out.println("1. View Events");
@@ -14,10 +15,8 @@ public class EventManagementMain {
             System.out.println("4. Remove Event");
             System.out.println("5. Back to Admin Menu");
             System.out.print("Choose an option: ");
-
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
-
+            scanner.nextLine();
             switch (choice) {
                 case 1 -> listEvents();
                 case 2 -> addEvent(scanner);
@@ -46,8 +45,15 @@ public class EventManagementMain {
         System.out.print("Enter available tickets: ");
         int tickets = scanner.nextInt();
         System.out.print("Enter event date (YYYY-MM-DD): ");
-        Date date = Date.valueOf(scanner.next());
+        String dateStr = scanner.next();
+        scanner.nextLine();
 
+        String error = EventValidator.validateEvent(name, location, description, category, price, tickets, dateStr);
+        if (error != null) {
+            System.out.println("❌ " + error);
+            return;
+        }
+        Date date = Date.valueOf(dateStr);
         if (EventService.addEvent(name, location, description, category, price, tickets, date)) {
             System.out.println("✅ Event added successfully.");
         } else {
@@ -77,8 +83,15 @@ public class EventManagementMain {
         System.out.print("Enter new available tickets: ");
         int newTickets = scanner.nextInt();
         System.out.print("Enter new event date (YYYY-MM-DD): ");
-        Date newDate = Date.valueOf(scanner.next());
+        String dateStr = scanner.next();
+        scanner.nextLine();
 
+        String error = EventValidator.validateEvent(newName, newLocation, newDescription, newCategory, newPrice, newTickets, dateStr);
+        if (error != null) {
+            System.out.println("❌ " + error);
+            return;
+        }
+        Date newDate = Date.valueOf(dateStr);
         if (EventService.editEvent(eventId, newName, newLocation, newDescription, newCategory, newPrice, newTickets, newDate)) {
             System.out.println("✅ Event updated successfully.");
         } else {
@@ -90,7 +103,6 @@ public class EventManagementMain {
         System.out.print("Enter event ID to remove: ");
         int eventId = scanner.nextInt();
         scanner.nextLine();
-
         if (EventService.removeEvent(eventId)) {
             System.out.println("✅ Event removed successfully.");
         } else {

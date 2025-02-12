@@ -15,11 +15,10 @@ public class UserManager {
         String email = scanner.nextLine();
         System.out.println("Enter password:");
         String password = scanner.nextLine();
-
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-
         String sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
-        try (Connection con = DatabaseConfig.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try (Connection con = DatabaseConfig.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setString(1, username);
             pstmt.setString(2, email);
             pstmt.setString(3, hashedPassword);
@@ -36,12 +35,11 @@ public class UserManager {
         String username = scanner.nextLine();
         System.out.println("Enter password:");
         String password = scanner.nextLine();
-
         String sql = "SELECT * FROM users WHERE username = ?";
-        try (Connection con = DatabaseConfig.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try (Connection con = DatabaseConfig.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
-
             if (rs.next() && BCrypt.checkpw(password, rs.getString("password"))) {
                 System.out.println("User login successful! Welcome, " + username);
                 displayUserMenu(scanner, username);
@@ -61,7 +59,6 @@ public class UserManager {
             System.out.println("2. Change Password");
             System.out.println("3. Logout");
             System.out.print("Choose an option: ");
-
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
@@ -81,10 +78,10 @@ public class UserManager {
 
     private static void viewProfile(String username) {
         String sql = "SELECT username, email FROM users WHERE username = ?";
-        try (Connection con = DatabaseConfig.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try (Connection con = DatabaseConfig.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
-
             if (rs.next()) {
                 System.out.println("\nProfile Information:");
                 System.out.println("Username: " + rs.getString("username"));
@@ -102,9 +99,9 @@ public class UserManager {
         System.out.println("Enter new password:");
         String newPassword = scanner.nextLine();
         String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
-
         String sql = "UPDATE users SET password = ? WHERE username = ?";
-        try (Connection con = DatabaseConfig.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try (Connection con = DatabaseConfig.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setString(1, hashedPassword);
             pstmt.setString(2, username);
             pstmt.executeUpdate();

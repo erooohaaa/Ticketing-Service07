@@ -31,7 +31,6 @@ public class EventService {
         listEvents();
     }
 
-    // Уменьшает доступные билеты на 1 после бронирования
     public static void updateAvailableTickets(int eventId) {
         Event event = eventDAO.getFullEventDetails(eventId);
         if (event != null && event.getAvailableTickets() > 0) {
@@ -48,7 +47,6 @@ public class EventService {
         }
     }
 
-    // Увеличивает доступные билеты на 1 (вызывается при возврате билета)
     public static void increaseAvailableTickets(int eventId) {
         Event event = eventDAO.getFullEventDetails(eventId);
         if (event != null) {
@@ -65,19 +63,16 @@ public class EventService {
         }
     }
 
-    // При бронировании билета генерируется уникальный ID
     public static void bookTicket(int eventId, String username) {
         Event event = eventDAO.getFullEventDetails(eventId);
         if (event == null) {
             System.out.println("❌ Event not found.");
             return;
         }
-
         if (event.getAvailableTickets() <= 0) {
             System.out.println("❌ No tickets available for this event.");
             return;
         }
-
         int newTicketId = ((TicketDAOImpl) ticketDAO).generateNextTicketId();
         Ticket ticket = new Ticket(newTicketId, eventId, event.getCategory(), event.getPrice(), "Sold", username);
         ticketDAO.addTicket(ticket);

@@ -1,7 +1,7 @@
 package ui;
 
-import java.util.Scanner;
 import services.TicketService;
+import java.util.Scanner;
 
 public class UserDashboard {
     private TicketUI ticketUI;
@@ -17,17 +17,13 @@ public class UserDashboard {
             System.out.println("4. Refund Ticket");
             System.out.println("5. Logout");
             System.out.print("Choose an option: ");
-
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
-
+            scanner.nextLine();
             switch (choice) {
                 case 1 -> EventUI.viewEvents();
                 case 2 -> EventUI.bookTicket(scanner);
                 case 3 -> EventUI.viewUserTickets(scanner);
-                case 4 -> {
-                    ticketUI.refundTicketUI();
-                }
+                case 4 -> ticketUI.refundTicketUI();
                 case 5 -> {
                     System.out.println("Logging out...");
                     return;

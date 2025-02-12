@@ -14,10 +14,8 @@ public class AdminDashboard {
             System.out.println("4. Manage Events");
             System.out.println("5. Logout");
             System.out.print("Choose an option: ");
-
             int choice = scanner.nextInt();
             scanner.nextLine();
-
             switch (choice) {
                 case 1 -> AdminService.viewAllUsers();
                 case 2 -> AdminService.viewAllAdmins();

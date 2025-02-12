@@ -2,7 +2,8 @@ package services;
 
 import models.Ticket;
 import dao.TicketDAO;
-import validation.rules.TicketValidator;
+import dao.TicketDAOImpl;
+import validation.rules.TicketValidator;  // <-- добавляем импорт
 
 public class TicketService {
     private final TicketDAO ticketDAO;
@@ -16,7 +17,7 @@ public class TicketService {
             System.out.println("Invalid ticket data provided. Ticket purchase aborted.");
             return;
         }
-        int newTicketId = ((dao.TicketDAOImpl) ticketDAO).generateNextTicketId();
+        int newTicketId = ((TicketDAOImpl) ticketDAO).generateNextTicketId();
         Ticket ticket = new Ticket(newTicketId, eventId, category, price, "Sold", username);
         ticketDAO.addTicket(ticket);
     }

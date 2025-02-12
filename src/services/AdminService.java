@@ -5,9 +5,9 @@ import eventmanagement.EventManagementMain;
 import java.util.Scanner;
 
 public class AdminService {
-    private AdminActions adminActions;  // ✅ Добавлено
+    private final Object adminActions;
 
-    public AdminService(AdminActions adminActions) {
+    public AdminService(Object adminActions) {
         this.adminActions = adminActions;
     }
 

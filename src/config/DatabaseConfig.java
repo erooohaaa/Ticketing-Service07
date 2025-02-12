@@ -15,7 +15,7 @@ public class DatabaseConfig {
 
     public static Connection getConnection() {
         try {
-            if (connection == null || connection.isClosed()) {  
+            if (connection == null || connection.isClosed()) {
                 connection = DriverManager.getConnection(URL, USER, PASSWORD);
                 System.out.println("✅ Database connected successfully.");
             }
@@ -24,5 +24,17 @@ public class DatabaseConfig {
             throw new RuntimeException("❌ Failed to connect to the database.");
         }
         return connection;
+    }
+
+    public static void closeConnection() {
+        if (connection != null) {
+            try {
+                connection.close();
+                connection = null;
+                System.out.println("✅ Database connection closed.");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

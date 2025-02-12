@@ -5,8 +5,8 @@ public class Ticket {
     private int eventId;
     private String category;
     private double price;
-    private String status; // Available, Sold, Refunded
-    private String username; // Новое поле для привязки билета к пользователю
+    private String status;
+    private String username;
 
     public Ticket(int id, int eventId, String category, double price, String status, String username) {
         this.id = id;
@@ -26,4 +26,10 @@ public class Ticket {
 
     public void setStatus(String status) { this.status = status; }
     public void setUsername(String username) { this.username = username; }
+
+    @Override
+    public String toString() {
+        return "Ticket [id=" + id + ", eventId=" + eventId + ", category=" + category +
+                ", price=" + price + ", status=" + status + ", username=" + username + "]";
+    }
 }
