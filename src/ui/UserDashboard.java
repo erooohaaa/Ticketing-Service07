@@ -14,7 +14,7 @@ public class UserDashboard {
             System.out.println("1. View Events");
             System.out.println("2. Book Ticket");
             System.out.println("3. View My Tickets");
-            System.out.println("4. Manage Tickets");
+            System.out.println("4. Refund Ticket"); // 🔧 Изменено "Manage Tickets" на "Refund Ticket"
             System.out.println("5. Logout");
             System.out.print("Choose an option: ");
 
@@ -25,7 +25,9 @@ public class UserDashboard {
                 case 1 -> EventUI.viewEvents();
                 case 2 -> EventUI.bookTicket(scanner);
                 case 3 -> EventUI.viewUserTickets(scanner);
-                case 4 -> ticketUI.showTicketMenu();
+                case 4 -> { // 🔧 Теперь сразу вызывается refundTicketUI()
+                    ticketUI.refundTicketUI();
+                }
                 case 5 -> {
                     System.out.println("Logging out...");
                     return;
