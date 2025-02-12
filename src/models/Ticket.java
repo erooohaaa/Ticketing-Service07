@@ -6,13 +6,15 @@ public class Ticket {
     private String category;
     private double price;
     private String status; // Available, Sold, Refunded
+    private String username; // Новое поле для привязки билета к пользователю
 
-    public Ticket(int id, int eventId, String category, double price, String status) {
+    public Ticket(int id, int eventId, String category, double price, String status, String username) {
         this.id = id;
         this.eventId = eventId;
         this.category = category;
         this.price = price;
         this.status = status;
+        this.username = username;
     }
 
     public int getId() { return id; }
@@ -20,6 +22,8 @@ public class Ticket {
     public String getCategory() { return category; }
     public double getPrice() { return price; }
     public String getStatus() { return status; }
+    public String getUsername() { return username; }
 
     public void setStatus(String status) { this.status = status; }
+    public void setUsername(String username) { this.username = username; }
 }
