@@ -14,7 +14,9 @@ public class EventUI {
         System.out.print("Enter event ID: ");
         int eventId = scanner.nextInt();
         scanner.nextLine(); // Consume newline
-        EventService.bookTicket(eventId);
+        System.out.print("Enter your username: ");
+        String username = scanner.nextLine();
+        EventService.bookTicket(eventId, username);
     }
 
     public static void viewUserTickets(Scanner scanner) {

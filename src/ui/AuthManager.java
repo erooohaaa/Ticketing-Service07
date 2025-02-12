@@ -87,7 +87,8 @@ public class AuthManager {
                     String hashedPassword = rs.getString("password");
                     if (BCrypt.checkpw(password, hashedPassword)) {
                         System.out.println("✅ Login successful! Welcome, User " + username);
-                        UserDashboard.displayUserMenu(scanner, new TicketService(new TicketDAOImpl()));
+                        // Используем TicketDAOImpl.getInstance() вместо new TicketDAOImpl()
+                        UserDashboard.displayUserMenu(scanner, new TicketService(TicketDAOImpl.getInstance()));
                         return;
                     } else {
                         System.out.println("❌ Incorrect password.");
@@ -103,4 +104,5 @@ public class AuthManager {
             System.out.println("❌ Error occurred during login.");
             e.printStackTrace();
         }
-    }}
+    }
+}
