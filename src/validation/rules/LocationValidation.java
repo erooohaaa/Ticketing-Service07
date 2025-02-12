@@ -4,8 +4,8 @@ import validation.ValidationRule;
 
 public class LocationValidation implements ValidationRule<String> {
     @Override
-    public boolean validate(String value) {
-        return value != null && !value.trim().isEmpty() && !value.equalsIgnoreCase("N/A");
+    public boolean validate(String location) {
+        return location != null && !location.trim().isEmpty() && !location.equalsIgnoreCase("N/A");
     }
 
     @Override

@@ -34,10 +34,8 @@ public class EventUI {
             System.out.println("3. View My Tickets");
             System.out.println("4. Back to Main Menu");
             System.out.print("Choose an option: ");
-
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
-
+            scanner.nextLine();
             switch (choice) {
                 case 1 -> viewEvents();
                 case 2 -> bookTicket(scanner);

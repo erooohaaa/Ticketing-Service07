@@ -1,9 +1,11 @@
+package models;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class FullOrderDescription {
     private Order order;
-    private User buyer;  // Предполагается, что класс User находится в этом же пакете (models)
+    private User buyer;
     private List<OrderItem> orderItems;
 
     public FullOrderDescription(Order order, User buyer, List<OrderItem> orderItems) {
@@ -26,7 +28,6 @@ public class FullOrderDescription {
 
     @Override
     public String toString() {
-        // Используем Stream API и Collectors.joining для формирования строки позиций заказа
         String items = orderItems.stream()
                 .map(OrderItem::toString)
                 .collect(Collectors.joining("\n  ", "  ", "\n"));

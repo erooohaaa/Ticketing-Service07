@@ -1,8 +1,7 @@
 package ui;
 
-import org.mindrot.jbcrypt.BCrypt;
-
 import config.DatabaseConfig;
+import org.mindrot.jbcrypt.BCrypt;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,32 +11,27 @@ class AdminManager {
     public static void registerAdmin(Scanner scanner) {
         System.out.println("Enter admin username:");
         String username = scanner.nextLine();
-
         if (isAdminUsernameExists(username)) {
             System.out.println("Admin username already exists. Try again.");
             return;
         }
-
         System.out.println("Enter admin password:");
         String password = scanner.nextLine();
-
         System.out.println("Select permissions level:");
         System.out.println("1. Full Access");
         System.out.println("2. Edit");
         System.out.println("3. Read Only");
         int permissionChoice = scanner.nextInt();
         scanner.nextLine();
-
         String permissions = getPermissionsFromChoice(permissionChoice);
         if (permissions == null) {
             System.out.println("Invalid permissions choice. Registration failed.");
             return;
         }
-
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-
         String sql = "INSERT INTO admins (username, password, permissions) VALUES (?, ?, ?)";
-        try (Connection con = DatabaseConfig.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try (Connection con = DatabaseConfig.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setString(1, username);
             pstmt.setString(2, hashedPassword);
             pstmt.setString(3, permissions);
@@ -54,15 +48,15 @@ class AdminManager {
         String username = scanner.nextLine();
         System.out.println("Enter admin password:");
         String password = scanner.nextLine();
-
         String sql = "SELECT * FROM admins WHERE username = ?";
-        try (Connection con = DatabaseConfig.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try (Connection con = DatabaseConfig.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
-
             if (rs.next() && BCrypt.checkpw(password, rs.getString("password"))) {
                 System.out.println("Admin login successful! Welcome, " + username);
-                AdminDashboard.displayAdminMenu(scanner); // ✅ Исправлено
+                AdminDashboard.displayAdminMenu(scanner);
+                return;
             } else {
                 System.out.println("Invalid credentials. Try again.");
             }
@@ -74,7 +68,8 @@ class AdminManager {
 
     private static boolean isAdminUsernameExists(String username) {
         String sql = "SELECT COUNT(*) FROM admins WHERE username = ?";
-        try (Connection con = DatabaseConfig.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try (Connection con = DatabaseConfig.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
             return rs.next() && rs.getInt(1) > 0;
