@@ -5,8 +5,8 @@ public class Ticket {
     private int eventId;
     private String category;
     private double price;
-    private String status; // Available, Sold, Refunded
-    private String username; // Новое поле для привязки билета к пользователю
+    private String status;
+    private String username;
 
     public Ticket(int id, int eventId, String category, double price, String status, String username) {
         this.id = id;

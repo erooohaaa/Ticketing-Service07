@@ -1,36 +1,24 @@
-package dao;
-
 import models.Ticket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class TicketDAOImpl implements TicketDAO {
     private static TicketDAOImpl instance;
     private List<Ticket> tickets;
-    private int nextTicketId = 1; // Счётчик для уникальных ID билетов
+    private int nextTicketId = 1;
 
-    // Приватный конструктор для синглтона
     private TicketDAOImpl() {
         tickets = new ArrayList<>();
     }
 
-    // Получение единственного экземпляра
-    public static TicketDAOImpl getInstance() {
+    public static synchronized TicketDAOImpl getInstance() {
         if (instance == null) {
             instance = new TicketDAOImpl();
         }
         return instance;
     }
-    public Ticket getTicketById(int id) {
-        // Используем findAny() вместо findFirst() – функционально аналогично, но выглядит по-другому
-        return tickets.stream()
-                .filter(ticket -> ticket.getId() == id)
-                .findAny()
-                .orElse(null);
-    }
 
-
-    // Метод генерации нового уникального ID (потокобезопасно)
     public synchronized int generateNextTicketId() {
         return nextTicketId++;
     }
@@ -42,29 +30,24 @@ public class TicketDAOImpl implements TicketDAO {
 
     @Override
     public Ticket getTicketById(int id) {
-        return tickets.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+        Optional<Ticket> foundTicket = tickets.stream()
+                .filter(t -> t.getId() == id)
+                .findAny();
+        return foundTicket.orElse(null);
     }
 
     @Override
     public List<Ticket> getTicketsByEvent(int eventId) {
-        List<Ticket> eventTickets = new ArrayList<>();
-        for (Ticket ticket : tickets) {
-            if (ticket.getEventId() == eventId) {
-                eventTickets.add(ticket);
-            }
-        }
-        return eventTickets;
+        return tickets.stream()
+                .filter(t -> t.getEventId() == eventId)
+                .toList();
     }
 
     @Override
     public List<Ticket> getTicketsByUser(String username) {
-        List<Ticket> userTickets = new ArrayList<>();
-        for (Ticket ticket : tickets) {
-            if (ticket.getUsername().equalsIgnoreCase(username)) {
-                userTickets.add(ticket);
-            }
-        }
-        return userTickets;
+        return tickets.stream()
+                .filter(t -> t.getUsername().equalsIgnoreCase(username))
+                .toList();
     }
 
     @Override
@@ -74,5 +57,4 @@ public class TicketDAOImpl implements TicketDAO {
             ticket.setStatus(status);
         }
     }
-
 }
