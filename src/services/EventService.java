@@ -12,7 +12,6 @@ import config.DatabaseConfig;
 
 public class EventService {
     private static final EventDAO eventDAO = new EventDAO();
-    // Используем синглтон TicketDAOImpl через getInstance()
     private static final TicketDAO ticketDAO = TicketDAOImpl.getInstance();
 
     public static void listEvents() {

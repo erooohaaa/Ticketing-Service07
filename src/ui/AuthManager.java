@@ -4,7 +4,6 @@ import config.DatabaseConfig;
 import dao.TicketDAOImpl;
 import org.mindrot.jbcrypt.BCrypt;
 import services.TicketService;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -60,7 +59,6 @@ public class AuthManager {
         String sqlUser = "SELECT password FROM users WHERE username = ?";
 
         try (Connection con = DatabaseConfig.getConnection()) {
-            // Проверяем среди админов
             try (PreparedStatement pstmt = con.prepareStatement(sqlAdmin)) {
                 pstmt.setString(1, username);
                 ResultSet rs = pstmt.executeQuery();
@@ -69,7 +67,7 @@ public class AuthManager {
                     String hashedPassword = rs.getString("password");
                     if (BCrypt.checkpw(password, hashedPassword)) {
                         System.out.println("✅ Login successful! Welcome, Admin " + username);
-                        AdminDashboard.displayAdminMenu(scanner);  // Запуск панели администратора
+                        AdminDashboard.displayAdminMenu(scanner);
                         return;
                     } else {
                         System.out.println("❌ Incorrect password.");
@@ -78,7 +76,6 @@ public class AuthManager {
                 }
             }
 
-            // Проверяем среди пользователей
             try (PreparedStatement pstmt = con.prepareStatement(sqlUser)) {
                 pstmt.setString(1, username);
                 ResultSet rs = pstmt.executeQuery();
@@ -87,7 +84,6 @@ public class AuthManager {
                     String hashedPassword = rs.getString("password");
                     if (BCrypt.checkpw(password, hashedPassword)) {
                         System.out.println("✅ Login successful! Welcome, User " + username);
-                        // Используем TicketDAOImpl.getInstance() вместо new TicketDAOImpl()
                         UserDashboard.displayUserMenu(scanner, new TicketService(TicketDAOImpl.getInstance()));
                         return;
                     } else {
@@ -97,7 +93,6 @@ public class AuthManager {
                 }
             }
 
-            // Если не нашли ни там, ни там
             System.out.println("❌ User not found.");
 
         } catch (Exception e) {

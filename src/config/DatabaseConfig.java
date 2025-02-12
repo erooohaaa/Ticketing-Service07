@@ -25,16 +25,4 @@ public class DatabaseConfig {
         }
         return connection;
     }
-
-    public static void closeConnection() {
-        if (connection != null) {
-            try {
-                connection.close();
-                connection = null;
-                System.out.println("✅ Database connection closed.");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }

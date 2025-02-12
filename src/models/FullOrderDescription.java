@@ -1,10 +1,9 @@
-package models;
-
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FullOrderDescription {
     private Order order;
-    private User buyer;  // Используем уже существующий класс User
+    private User buyer;  // Предполагается, что класс User находится в этом же пакете (models)
     private List<OrderItem> orderItems;
 
     public FullOrderDescription(Order order, User buyer, List<OrderItem> orderItems) {
@@ -27,13 +26,13 @@ public class FullOrderDescription {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("FullOrderDescription:\n");
-        sb.append(order.toString()).append("\n");
-        sb.append("Buyer: ").append(buyer.toString()).append("\n");
-        sb.append("Order Items:\n");
-        // Lambda-выражение для перебора списка orderItems
-        orderItems.forEach(item -> sb.append("  ").append(item.toString()).append("\n"));
-        return sb.toString();
+        // Используем Stream API и Collectors.joining для формирования строки позиций заказа
+        String items = orderItems.stream()
+                .map(OrderItem::toString)
+                .collect(Collectors.joining("\n  ", "  ", "\n"));
+        return "FullOrderDescription:\n" +
+                order.toString() + "\n" +
+                "Buyer: " + buyer.toString() + "\n" +
+                "Order Items:\n" + items;
     }
 }
